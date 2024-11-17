@@ -1,4 +1,4 @@
-package us.cloud.teachme.forumMessage.controller;
+package us.cloud.teachme.forummessage.controller;
 
 import java.util.List;
 
@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import us.cloud.teachme.forumMessage.model.ForumMessage;
-import us.cloud.teachme.forumMessage.service.ForumMessageService;
+import us.cloud.teachme.forummessage.model.ForumMessage;
+import us.cloud.teachme.forummessage.service.ForumMessageService;
 
 @RestController
 @RequestMapping("/api/forumMessages")

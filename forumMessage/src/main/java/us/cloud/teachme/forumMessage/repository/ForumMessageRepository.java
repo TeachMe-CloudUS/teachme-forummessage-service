@@ -1,10 +1,10 @@
-package us.cloud.teachme.forumMessage.repository;
+package us.cloud.teachme.forummessage.repository;
 
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import us.cloud.teachme.forumMessage.model.ForumMessage;
+import us.cloud.teachme.forummessage.model.ForumMessage;
 
 public interface ForumMessageRepository extends MongoRepository<ForumMessage, String>{
  //   List<ForumMessage> findByCategory(String category);

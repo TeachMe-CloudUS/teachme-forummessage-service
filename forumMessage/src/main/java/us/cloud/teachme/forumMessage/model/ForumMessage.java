@@ -1,4 +1,4 @@
-package us.cloud.teachme.forumMessage.model;
+package us.cloud.teachme.forummessage.model;
 
 import java.util.Date;
 

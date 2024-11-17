@@ -1,4 +1,4 @@
-package us.cloud.teachme.forumMessage.service;
+package us.cloud.teachme.forummessage.service;
 
 import java.util.Date;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import us.cloud.teachme.forumMessage.model.ForumMessage;
-import us.cloud.teachme.forumMessage.repository.ForumMessageRepository;
+import us.cloud.teachme.forummessage.model.ForumMessage;
+import us.cloud.teachme.forummessage.repository.ForumMessageRepository;
 @Service
 public class ForumMessageService {
     @Autowired

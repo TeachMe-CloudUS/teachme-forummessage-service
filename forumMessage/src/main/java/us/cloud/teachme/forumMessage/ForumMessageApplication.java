@@ -1,4 +1,4 @@
-package us.cloud.teachme.forumMessage;
+package us.cloud.teachme.forummessage;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
