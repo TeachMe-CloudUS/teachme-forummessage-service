@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +17,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import us.cloud.teachme.forummessage.model.ForumMessage;
 import us.cloud.teachme.forummessage.service.ForumMessageService;
+import us.cloud.teachme.forummessage.service.BadWordsService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/${api.version}/messages")
 public class ForumMessageController {
     @Autowired
-    private ForumMessageService ForumMessageService;
+    private ForumMessageService forumMessageService;
+
+    @Autowired
+    private BadWordsService badWordsService;
 
     // GET /api/${api.version}/messages - Obtiene todos los cursos
     @GetMapping
     public List<ForumMessage> getAllForumMessages() {
-        return ForumMessageService.getAllForumMessages();
+        return forumMessageService.getAllForumMessages();
     }
 
     
@@ -34,23 +41,29 @@ public class ForumMessageController {
     // GET /api/${api.version}/messages /{id} - Obtiene un curso por ID
     @GetMapping("/{id}")
     public ResponseEntity<ForumMessage> getForumMessageById(@PathVariable String id) {
-        return ForumMessageService.getForumMessageById(id)
+        return forumMessageService.getForumMessageById(id)
                 .map(ForumMessage -> ResponseEntity.ok(ForumMessage))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // POST /api/${api.version}/messages  - Crea un nuevo curso
     @PostMapping
-    public ResponseEntity<ForumMessage> createForumMessage(@RequestBody ForumMessage ForumMessage) {
-        ForumMessage createdForumMessage = ForumMessageService.createForumMessage(ForumMessage);
+    public ResponseEntity<?> createForumMessage(@Valid @RequestBody ForumMessage ForumMessage) {
+        if (badWordsService.containsBadWords(ForumMessage.getContent())) {
+            return ResponseEntity.badRequest().body("The content has bad words");
+        }
+        ForumMessage createdForumMessage = forumMessageService.createForumMessage(ForumMessage);
         return new ResponseEntity<>(createdForumMessage, HttpStatus.CREATED);
     }
 
     // PUT /api/${api.version}/messages/{id} - Actualiza un curso existente
     @PutMapping("/{id}")
-    public ResponseEntity<ForumMessage> updateForumMessage(@PathVariable String id, @RequestBody ForumMessage ForumMessage) {
+    public ResponseEntity<?> updateForumMessage(@PathVariable String id, @Valid @RequestBody ForumMessage ForumMessage) {
         try {
-            ForumMessage updatedForumMessage = ForumMessageService.updateForumMessage(id, ForumMessage);
+            if (badWordsService.containsBadWords(ForumMessage.getContent())) {
+                return ResponseEntity.badRequest().body("The content has bad words");
+            }
+            ForumMessage updatedForumMessage = forumMessageService.updateForumMessage(id, ForumMessage);
             return ResponseEntity.ok(updatedForumMessage);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -61,10 +74,17 @@ public class ForumMessageController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteForumMessage(@PathVariable String id) {
         try {
-            ForumMessageService.deleteForumMessage(id);
+            forumMessageService.deleteForumMessage(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // DELETE /api/${api.version}/messages - Elimina todos los cursos
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllForumMessages() {
+        forumMessageService.deleteAllForumMessages();
+        return ResponseEntity.noContent().build();
     }
 }
