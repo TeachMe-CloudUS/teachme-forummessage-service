@@ -30,6 +30,13 @@ public class ForumMessageController {
     @Autowired
     private BadWordsService badWordsService;
 
+    public ForumMessageController(ForumMessageService forumMessageService, BadWordsService badWordsService) {
+
+        this.forumMessageService = forumMessageService;
+
+        this.badWordsService = badWordsService;
+    }
+
     // GET /api/${api.version}/messages - Obtiene todos los cursos
     @GetMapping
     public List<ForumMessage> getAllForumMessages() {
@@ -42,28 +49,28 @@ public class ForumMessageController {
     @GetMapping("/{id}")
     public ResponseEntity<ForumMessage> getForumMessageById(@PathVariable String id) {
         return forumMessageService.getForumMessageById(id)
-                .map(ForumMessage -> ResponseEntity.ok(ForumMessage))
+                .map(forumMessage -> ResponseEntity.ok(forumMessage))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // POST /api/${api.version}/messages  - Crea un nuevo curso
     @PostMapping
-    public ResponseEntity<?> createForumMessage(@Valid @RequestBody ForumMessage ForumMessage) {
-        if (badWordsService.containsBadWords(ForumMessage.getContent())) {
+    public ResponseEntity<?> createForumMessage(@Valid @RequestBody ForumMessage forumMessage) {
+        if (badWordsService.containsBadWords(forumMessage.getContent())) {
             return ResponseEntity.badRequest().body("The content has bad words");
         }
-        ForumMessage createdForumMessage = forumMessageService.createForumMessage(ForumMessage);
+        ForumMessage createdForumMessage = forumMessageService.createForumMessage(forumMessage);
         return new ResponseEntity<>(createdForumMessage, HttpStatus.CREATED);
     }
 
     // PUT /api/${api.version}/messages/{id} - Actualiza un curso existente
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateForumMessage(@PathVariable String id, @Valid @RequestBody ForumMessage ForumMessage) {
+    public ResponseEntity<?> updateForumMessage(@PathVariable String id, @Valid @RequestBody ForumMessage forumMessage) {
         try {
-            if (badWordsService.containsBadWords(ForumMessage.getContent())) {
+            if (badWordsService.containsBadWords(forumMessage.getContent())) {
                 return ResponseEntity.badRequest().body("The content has bad words");
             }
-            ForumMessage updatedForumMessage = forumMessageService.updateForumMessage(id, ForumMessage);
+            ForumMessage updatedForumMessage = forumMessageService.updateForumMessage(id, forumMessage);
             return ResponseEntity.ok(updatedForumMessage);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
