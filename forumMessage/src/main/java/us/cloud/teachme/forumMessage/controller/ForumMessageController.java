@@ -18,23 +18,20 @@ import us.cloud.teachme.forummessage.model.ForumMessage;
 import us.cloud.teachme.forummessage.service.ForumMessageService;
 
 @RestController
-@RequestMapping("/api/forumMessages")
+@RequestMapping("/api/${api.version}/messages")
 public class ForumMessageController {
     @Autowired
     private ForumMessageService ForumMessageService;
 
-    // GET /api/ForumMessages - Obtiene todos los cursos
+    // GET /api/${api.version}/messages - Obtiene todos los cursos
     @GetMapping
     public List<ForumMessage> getAllForumMessages() {
         return ForumMessageService.getAllForumMessages();
     }
 
-    /*@GetMapping("/filter")
-    public List<ForumMessage> getForumMessagesByCategory(@RequestParam String category) {
-        return ForumMessageService.getForumMessagesByCategory(category);
-    }*/
+    
 
-    // GET /api/ForumMessages/{id} - Obtiene un curso por ID
+    // GET /api/${api.version}/messages /{id} - Obtiene un curso por ID
     @GetMapping("/{id}")
     public ResponseEntity<ForumMessage> getForumMessageById(@PathVariable String id) {
         return ForumMessageService.getForumMessageById(id)
@@ -42,14 +39,14 @@ public class ForumMessageController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // POST /api/ForumMessages - Crea un nuevo curso
+    // POST /api/${api.version}/messages  - Crea un nuevo curso
     @PostMapping
     public ResponseEntity<ForumMessage> createForumMessage(@RequestBody ForumMessage ForumMessage) {
         ForumMessage createdForumMessage = ForumMessageService.createForumMessage(ForumMessage);
         return new ResponseEntity<>(createdForumMessage, HttpStatus.CREATED);
     }
 
-    // PUT /api/ForumMessages/{id} - Actualiza un curso existente
+    // PUT /api/${api.version}/messages/{id} - Actualiza un curso existente
     @PutMapping("/{id}")
     public ResponseEntity<ForumMessage> updateForumMessage(@PathVariable String id, @RequestBody ForumMessage ForumMessage) {
         try {
@@ -60,7 +57,7 @@ public class ForumMessageController {
         }
     }
 
-    // DELETE /api/ForumMessages/{id} - Elimina un curso por ID
+    // DELETE /api/${api.version}/messages/{id} - Elimina un curso por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteForumMessage(@PathVariable String id) {
         try {
