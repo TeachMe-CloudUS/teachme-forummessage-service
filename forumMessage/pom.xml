@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>us.cloud.teachme</groupId>
-	<artifactId>forumMessage</artifactId>
+	<artifactId>forummessage</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>forumMessage</name>
 	<description>Microservice that manages the forums messages in TeachMe.</description>
@@ -42,7 +42,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>3.1.4</version> <!-- Ajusta la versión según tu proyecto -->
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -88,6 +92,7 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
 		</dependency-->
+		
 	</dependencies>
 
 	<build>
