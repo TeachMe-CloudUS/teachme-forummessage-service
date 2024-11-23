@@ -5,8 +5,17 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+import us.cloud.teachme.forummessage.config.RestTemplateConfig;
 import us.cloud.teachme.forummessage.model.ForumMessage;
 import us.cloud.teachme.forummessage.repository.ForumMessageRepository;
 @Service
@@ -46,6 +55,18 @@ public class ForumMessageService {
         }
     }
 
+    public void deleteAllForumMessages() {
+        ForumMessageRepository.deleteAll();
+    }
+
+    public List<ForumMessage> getForumMessagesByForumId(String forumId) {
+        return ForumMessageRepository.findByForumId(forumId);
+    }
+
+    public void deleteForumMessagesByForumId(String forumId) {
+        ForumMessageRepository.deleteByForumId(forumId);
+    }
 
     
 }
+    
