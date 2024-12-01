@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>us.cloud.teachme</groupId>
-	<artifactId>forummessage</artifactId>
+	<artifactId>forum</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>forumMessage</name>
-	<description>Microservice that manages the forums messages in TeachMe.</description>
+	<name>forum</name>
+	<description>Microservice that forums and the messages of it in TeachMe.</description>
 	<url/>
 	<licenses>
 		<license/>
