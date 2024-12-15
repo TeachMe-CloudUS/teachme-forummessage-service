@@ -17,6 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import us.cloud.teachme.forum.model.Forum;
 import us.cloud.teachme.forum.repository.ForumRepository;
+import us.cloud.teachme.forummessage.model.ForumMessage;
 @Service
 public class ForumService {
     @Autowired
@@ -66,6 +67,9 @@ public class ForumService {
         ForumRepository.deleteById(Id);
     }
 
-    
+    public List<ForumMessage> getAllForumMessages(String Id) {
+        return ForumRepository.getAllMessages(Id);
+    }
+
 }
     
