@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -19,14 +20,18 @@ public class ForumMessage {
     
     @Id
     private String id;
+    @NotNull(message = "The studentId cannot be null")
     private String studentId;
 
     @NotNull(message = "The message cannot be null")
     @NotBlank(message = "The message cannot be empty")
     @Size(max = 300, message = "The message must have a maximum of 300 characters")
     private String content;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date creationDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastModifDate;
+    @NotNull(message = "The forumId cannot be null")
     private String forumId;
     
 
