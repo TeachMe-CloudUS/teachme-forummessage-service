@@ -23,6 +23,7 @@ import us.cloud.teachme.forummessage.controller.ForumMessageController;
 import us.cloud.teachme.forummessage.model.ForumMessage;
 import us.cloud.teachme.forummessage.service.ForumMessageService;
 import us.cloud.teachme.forummessage.service.BadWordsService;
+import us.cloud.teachme.forum.service.ForumService;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,6 +37,10 @@ public class ForumMessageControllerTest {
     @Mock
     private ForumMessageService forumMessageService;
 
+    
+    @Mock
+    private ForumService forumService;
+
     @Mock
     private BadWordsService badWordsService;
 
@@ -47,7 +52,7 @@ public class ForumMessageControllerTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        forumMessageController = new ForumMessageController(forumMessageService, badWordsService);
+        forumMessageController = new ForumMessageController(forumMessageService, forumService, badWordsService);
         mockMvc = MockMvcBuilders.standaloneSetup(forumMessageController).build();
     }
 /*
