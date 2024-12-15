@@ -36,6 +36,7 @@ public class ForumService {
 
     public Forum createForum(Forum Forum) {
         Forum.setCreationDate(new Date());
+        Forum.setLastModifDate(new Date());
         return ForumRepository.save(Forum);
     }
 
@@ -67,9 +68,7 @@ public class ForumService {
         ForumRepository.deleteById(Id);
     }
 
-    public List<ForumMessage> getAllForumMessages(String Id) {
-        return ForumRepository.getAllMessages(Id);
-    }
+    
 
 }
     

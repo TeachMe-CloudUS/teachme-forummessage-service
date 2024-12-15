@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import us.cloud.teachme.forummessage.model.ForumMessage;
 import us.cloud.teachme.forummessage.service.ForumMessageService;
 import us.cloud.teachme.forummessage.service.BadWordsService;
+import us.cloud.teachme.forum.service.ForumService;
 
 import jakarta.validation.Valid;
 
@@ -28,11 +29,15 @@ public class ForumMessageController {
     private ForumMessageService forumMessageService;
 
     @Autowired
+    private ForumService forumService;
+
+    @Autowired
     private BadWordsService badWordsService;
 
-    public ForumMessageController(ForumMessageService forumMessageService, BadWordsService badWordsService) {
+    public ForumMessageController(ForumMessageService forumMessageService,ForumService forumService, BadWordsService badWordsService) {
 
         this.forumMessageService = forumMessageService;
+        this.forumService = forumService;
 
         this.badWordsService = badWordsService;
     }
@@ -52,12 +57,26 @@ public class ForumMessageController {
                 .map(forumMessage -> ResponseEntity.ok(forumMessage))
                 .orElse(ResponseEntity.notFound().build());
     }
+    @GetMapping("/forum/{id}")
+    public List<ResponseEntity<ForumMessage>> getForumMessageByForumId(@PathVariable String id) {
+        return forumMessageService.getForumMessagesByForumId(id)
+                .stream()
+                .map(forumMessage -> ResponseEntity.ok(forumMessage))
+                .toList();
+    }
+    
 
     // POST /api/${api.version}/messages  - Crea un nuevo curso
     @PostMapping
     public ResponseEntity<?> createForumMessage(@Valid @RequestBody ForumMessage forumMessage) {
         if (badWordsService.containsBadWords(forumMessage.getContent())) {
             return ResponseEntity.badRequest().body("The content has bad words");
+        }
+        if (forumMessage.getForumId() == null) {
+            return ResponseEntity.badRequest().body("The forumId cannot be null");
+        }
+        if (forumService.getForumById(forumMessage.getForumId()).isEmpty()) {
+            return ResponseEntity.badRequest().body("The forumId does not exist");            
         }
         ForumMessage createdForumMessage = forumMessageService.createForumMessage(forumMessage);
         return new ResponseEntity<>(createdForumMessage, HttpStatus.CREATED);
@@ -69,6 +88,12 @@ public class ForumMessageController {
         try {
             if (badWordsService.containsBadWords(forumMessage.getContent())) {
                 return ResponseEntity.badRequest().body("The content has bad words");
+            }
+            if (forumMessage.getForumId() == null) {
+                return ResponseEntity.badRequest().body("The forumId cannot be null");
+            }
+            if (forumService.getForumById(forumMessage.getForumId()).isEmpty()) {
+                return ResponseEntity.badRequest().body("The forumId does not exist");            
             }
             ForumMessage updatedForumMessage = forumMessageService.updateForumMessage(id, forumMessage);
             return ResponseEntity.ok(updatedForumMessage);

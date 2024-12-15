@@ -10,7 +10,6 @@ import us.cloud.teachme.forummessage.model.ForumMessage;
 public interface ForumRepository extends MongoRepository<Forum, String>{
     Forum findByCourseId(String Id);
     void deleteById(String Id);
-    List<ForumMessage> getAllMessages(String Id);
     
 
     

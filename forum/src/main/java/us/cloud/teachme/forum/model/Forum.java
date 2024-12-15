@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import us.cloud.teachme.forummessage.model.ForumMessage;
 
 @Getter
 @Setter
@@ -31,7 +32,7 @@ public class Forum {
     private Date creationDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastModifDate;
-    private List<Forum> messages;
+    //private List<ForumMessage> messages;
     
 
 
