@@ -1,13 +1,20 @@
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17 AS build
 
 WORKDIR /app
 
-COPY target/*.jar app.jar
+COPY . .
+
+RUN chmod +x mvnw
+
+RUN --mount=type=secret,id=maven_settings,target=/root/.m2/settings.xml \
+    ./mvnw clean package -DskipTests
+
+FROM eclipse-temurin:23-jre-alpine
+
+WORKDIR /app
+
+COPY --from=build app/target/*.jar /app/forum-service.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","app.jar"]
-
-
-# docker build -t message-service -f ./DockerFile .
-# docker run -p 8080:8080 message-service
+CMD ["java", "-jar", "forum-service.jar"]
