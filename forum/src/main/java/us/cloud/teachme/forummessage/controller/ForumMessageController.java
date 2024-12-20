@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import us.cloud.teachme.forummessage.model.ForumMessage;
@@ -23,7 +24,7 @@ import us.cloud.teachme.forum.service.ForumService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/${api.version}/messages")
+@RequestMapping("/api/${api.version}/forums/{forumId}/messages")
 public class ForumMessageController {
     @Autowired
     private ForumMessageService forumMessageService;
@@ -42,24 +43,26 @@ public class ForumMessageController {
         this.badWordsService = badWordsService;
     }
 
-    // GET /api/${api.version}/messages - Obtiene todos los cursos
+    /*/
     @GetMapping
-    public List<ForumMessage> getAllForumMessages() {
+    public List<ForumMessage> getAllForumMessages(@PathVariable("forumId") String forumId) {
         return forumMessageService.getAllForumMessages();
     }
-
+*/
     
 
     // GET /api/${api.version}/messages /{id} - Obtiene un curso por ID
     @GetMapping("/{id}")
-    public ResponseEntity<ForumMessage> getForumMessageById(@PathVariable String id) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ForumMessage> getForumMessageById(@PathVariable("forumId") String forumId,@PathVariable String id) {
         return forumMessageService.getForumMessageById(id)
                 .map(forumMessage -> ResponseEntity.ok(forumMessage))
                 .orElse(ResponseEntity.notFound().build());
     }
-    @GetMapping("/forum/{id}")
-    public List<ResponseEntity<ForumMessage>> getForumMessageByForumId(@PathVariable String id) {
-        return forumMessageService.getForumMessagesByForumId(id)
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<ResponseEntity<ForumMessage>> getForumMessageByForumId(@PathVariable("forumId") String forumId) {
+        return forumMessageService.getForumMessagesByForumId(forumId)
                 .stream()
                 .map(forumMessage -> ResponseEntity.ok(forumMessage))
                 .toList();
@@ -68,9 +71,13 @@ public class ForumMessageController {
 
     // POST /api/${api.version}/messages  - Crea un nuevo curso
     @PostMapping
-    public ResponseEntity<?> createForumMessage(@Valid @RequestBody ForumMessage forumMessage) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<?> createForumMessage(@PathVariable("forumId") String forumId,@Valid @RequestBody ForumMessage forumMessage ) {
         if (badWordsService.containsBadWords(forumMessage.getContent())) {
             return ResponseEntity.badRequest().body("The content has bad words");
+        }
+        if (forumMessage.getForumId() == forumId) {
+            return ResponseEntity.badRequest().body("The forumId is invalid");
         }
         if (forumMessage.getForumId() == null) {
             return ResponseEntity.badRequest().body("The forumId cannot be null");
@@ -84,7 +91,8 @@ public class ForumMessageController {
 
     // PUT /api/${api.version}/messages/{id} - Actualiza un curso existente
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateForumMessage(@PathVariable String id, @Valid @RequestBody ForumMessage forumMessage) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> updateForumMessage(@PathVariable("forumId") String forumId,@PathVariable String id, @Valid @RequestBody ForumMessage forumMessage) {
         try {
             if (badWordsService.containsBadWords(forumMessage.getContent())) {
                 return ResponseEntity.badRequest().body("The content has bad words");
@@ -104,7 +112,8 @@ public class ForumMessageController {
 
     // DELETE /api/${api.version}/messages/{id} - Elimina un curso por ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteForumMessage(@PathVariable String id) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Void> deleteForumMessage(@PathVariable("forumId") String forumId,@PathVariable String id) {
         try {
             forumMessageService.deleteForumMessage(id);
             return ResponseEntity.noContent().build();
