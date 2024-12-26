@@ -37,7 +37,7 @@ public class BadWordsService{
 
     public static boolean containsValidDoubleAsterisks(String input) {
         // Definir la expresión regular
-        String regex = "(?<![a-zA-Z])\\*\\*(?![a-zA-Z])";
+        String regex = "(?<=[a-zA-Z])\\*|\\*(?=[a-zA-Z])";
         
         // Crear el patrón y el matcher
         Pattern pattern = Pattern.compile(regex);
@@ -68,6 +68,8 @@ public class BadWordsService{
 
             // Extrae el valor de "result"
             String result = jsonResponse.get("result").asText();
+            System.out.println(result);
+            
 
             // Compara el valor de "result" con el contenido original
             if (result.equals(content) || containsValidDoubleAsterisks(result)) {

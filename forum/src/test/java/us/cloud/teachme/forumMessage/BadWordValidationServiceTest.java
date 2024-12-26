@@ -49,7 +49,8 @@ public class BadWordValidationServiceTest {
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResponse, HttpStatus.OK);
         when(restTemplate.exchange(anyString(), eq(HttpMethod.GET), any(), eq(String.class)))
                 .thenReturn(responseEntity);
-
+        
+        System.err.println(content);
         // Ejecutamos la validación
         boolean containsbadwords = badWordsService.containsBadWords(content);
 
