@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ import us.cloud.teachme.forum.service.ForumService;
 import us.cloud.teachme.forummessage.service.BadWordsService;
 
 import jakarta.validation.Valid;
-
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/${api.version}/forums")
 public class ForumController {
@@ -58,6 +59,7 @@ public class ForumController {
     // POST /api/${api.version}/messages  - Crea un nuevo curso
     @PostMapping
     public ResponseEntity<?> createForum(@Valid @RequestBody Forum forum) {
+        System.err.println(forum.getName());
         if (badWordsService.containsBadWords(forum.getName())) {
             return ResponseEntity.badRequest().body("The content has bad words");
         }

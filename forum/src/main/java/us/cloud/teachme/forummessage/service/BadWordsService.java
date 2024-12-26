@@ -17,6 +17,9 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 public class BadWordsService{
 
@@ -31,6 +34,19 @@ public class BadWordsService{
     public BadWordsService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
+
+    public static boolean containsValidDoubleAsterisks(String input) {
+        // Definir la expresión regular
+        String regex = "(?<![a-zA-Z])\\*\\*(?![a-zA-Z])";
+        
+        // Crear el patrón y el matcher
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        
+        // Verificar si hay coincidencias
+        return matcher.find();
+    }
+
     public boolean containsBadWords(String content) {
         String url = apiUrl + content;
 
@@ -46,7 +62,7 @@ public class BadWordsService{
             // Realiza la solicitud GET a la API
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
             String responseBody = response.getBody();
-
+     
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonResponse = objectMapper.readTree(responseBody);
 
@@ -54,7 +70,7 @@ public class BadWordsService{
             String result = jsonResponse.get("result").asText();
 
             // Compara el valor de "result" con el contenido original
-            if (result.equals(content)) {
+            if (result.equals(content) || containsValidDoubleAsterisks(result)) {
                 return false;
             }else{
                 return true;

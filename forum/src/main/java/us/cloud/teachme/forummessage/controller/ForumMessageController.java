@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ import us.cloud.teachme.forummessage.service.BadWordsService;
 import us.cloud.teachme.forum.service.ForumService;
 
 import jakarta.validation.Valid;
-
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/${api.version}/forums/{forumId}/messages")
 public class ForumMessageController {
@@ -61,11 +62,11 @@ public class ForumMessageController {
     }
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ResponseEntity<ForumMessage>> getForumMessageByForumId(@PathVariable("forumId") String forumId) {
-        return forumMessageService.getForumMessagesByForumId(forumId)
+    public List<ForumMessage> getForumMessageByForumId(@PathVariable("forumId") String forumId) {
+        return forumMessageService.getForumMessagesByForumId(forumId)/*
                 .stream()
                 .map(forumMessage -> ResponseEntity.ok(forumMessage))
-                .toList();
+                .toList()*/;
     }
     
 
