@@ -35,6 +35,13 @@ public class Forum {
     //private List<ForumMessage> messages;
     
 
+    public Forum( String courseId, String name, Date creationDate, Date lastModifDate) {
+        this.courseId = courseId;
+        this.name = name;
+        this.creationDate = creationDate;
+        this.lastModifDate = lastModifDate;
+    }
+
 
     
 
