@@ -66,8 +66,8 @@ public class ForumService {
         ForumRepository.deleteById(Id);
     }
 
-    public Forum getForumsByForumId(String id) {
-        return ForumRepository.findByForumId(id);
+    public Optional<Forum> getForumsByForumId(String id) {
+        return ForumRepository.findById(id);
     }
 
     public void deleteForumByCourseId(String courseId) {

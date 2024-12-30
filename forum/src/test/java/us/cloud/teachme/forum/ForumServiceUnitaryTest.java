@@ -128,7 +128,7 @@ class ForumServiceUnitaryTest {
         Forum forum = new Forum( "course1", "Forum by Course", new Date(), new Date());
         when(forumRepository.findByCourseId("course1")).thenReturn(forum);
 
-        Forum result = forumService.getForumsByForumId("course1");
+        Forum result = forumService.getForumsByCourseId("course1");
 
         assertNotNull(result);
         assertEquals("Forum by Course", result.getName());
@@ -174,7 +174,7 @@ class ForumServiceUnitaryTest {
     void testGetForumsByCourseIdNotFound() {
         when(forumRepository.findByCourseId("non-existent-course-id")).thenReturn(null);
 
-        Forum result = forumService.getForumsByForumId("non-existent-course-id");
+        Forum result = forumService.getForumsByCourseId("non-existent-course-id");
 
         assertNull(result, "El foro no debería existir para un CourseId inexistente");
         verify(forumRepository, times(1)).findByCourseId("non-existent-course-id");

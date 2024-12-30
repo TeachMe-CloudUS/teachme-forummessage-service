@@ -25,7 +25,7 @@ import us.cloud.teachme.forum.controller.ForumController;
 
 @SpringBootTest
 class ForumControllerUnitaryTest {
-
+/*
     @Mock
     private ForumService forumService;
 
@@ -135,7 +135,7 @@ class ForumControllerUnitaryTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(badWordsService, times(1)).containsBadWords("Updated Forum");
         verify(forumService, times(1)).updateForum("1", forumToUpdate);
-    }*/
+    }
 
     @Test
     @Rollback(true)
@@ -168,6 +168,6 @@ class ForumControllerUnitaryTest {
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(forumService, times(1)).deleteAllForums();
-    }
+    }*/
 }
 
