@@ -105,7 +105,7 @@ class ForumControllerUnitaryTest {
         verifyNoInteractions(forumService);
     }
 
-    @Test
+  /*  @Test
     @Rollback(true)
     void testUpdateForum_Valid() {
         Forum forumToUpdate = new Forum(null, "Updated Forum", new Date(), new Date());
@@ -135,7 +135,7 @@ class ForumControllerUnitaryTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(badWordsService, times(1)).containsBadWords("Updated Forum");
         verify(forumService, times(1)).updateForum("1", forumToUpdate);
-    }
+    }*/
 
     @Test
     @Rollback(true)

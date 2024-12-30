@@ -30,14 +30,12 @@ public class ForumService {
     public Optional<Forum> getForumById(String id) {
         return ForumRepository.findById(id);
     }
-    /*public List<Forum> getForumsByCategory(String category) {
-        return ForumRepository.findByCategory(category);
-    }*/
+    
 
-    public Forum createForum(Forum Forum) {
-        Forum.setCreationDate(new Date());
-        Forum.setLastModifDate(new Date());
-        return ForumRepository.save(Forum);
+    public Forum createForum(Forum forum) {
+        forum.setCreationDate(new Date());
+        forum.setLastModifDate(new Date());
+        return ForumRepository.save(forum);
     }
 
     public Forum updateForum(String id, Forum updatedForum) {
@@ -60,7 +58,7 @@ public class ForumService {
         ForumRepository.deleteAll();
     }
 
-    public Forum getForumsByForumId(String CourseId) {
+    public Forum getForumsByCourseId(String CourseId) {
         return ForumRepository.findByCourseId(CourseId);
     }
 
@@ -68,6 +66,13 @@ public class ForumService {
         ForumRepository.deleteById(Id);
     }
 
+    public Forum getForumsByForumId(String id) {
+        return ForumRepository.findByForumId(id);
+    }
+
+    public void deleteForumByCourseId(String courseId) {
+        ForumRepository.deleteByCourseId(courseId);
+    }
     
     
 

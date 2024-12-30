@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,7 @@ import us.cloud.teachme.forum.model.Forum;
 import us.cloud.teachme.forum.service.ForumService;
 
 import us.cloud.teachme.forummessage.service.BadWordsService;
+import us.cloud.teachme.forum.service.UserService;
 
 import jakarta.validation.Valid;
 @CrossOrigin(origins = "http://localhost:5173")
@@ -33,11 +35,16 @@ public class ForumController {
     @Autowired
     private BadWordsService badWordsService;
 
-    public ForumController(ForumService forumService, BadWordsService badWordsService) {
+    @Autowired
+    private UserService userService;
+
+    public ForumController(ForumService forumService, BadWordsService badWordsService, UserService userService) {
 
         this.forumService = forumService;
 
         this.badWordsService = badWordsService;
+
+        this.userService = userService;
     }
 
     // GET /api/${api.version}/messages - Obtiene todos los cursos
@@ -59,7 +66,6 @@ public class ForumController {
     // POST /api/${api.version}/messages  - Crea un nuevo curso
     @PostMapping
     public ResponseEntity<?> createForum(@Valid @RequestBody Forum forum) {
-        System.err.println(forum.getName());
         if (badWordsService.containsBadWords(forum.getName())) {
             return ResponseEntity.badRequest().body("The content has bad words");
         }
@@ -69,8 +75,25 @@ public class ForumController {
 
     // PUT /api/${api.version}/messages/{id} - Actualiza un curso existente
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateForum(@PathVariable String id, @Valid @RequestBody Forum forum) {
+    public ResponseEntity<?> updateForum(@RequestHeader("Authorization") String token, @PathVariable String id, @Valid @RequestBody Forum forum) {
         try {
+                // Eliminar cualquier espacio extra del token
+            token = token.trim();
+
+            // Extraer el UserId del token
+            String userId = userService.extractUserId(token);
+            System.out.println("UserId extraído: " + userId);
+
+            // Consultar el rol del usuario usando el UserId
+            String role = userService.getUserRoleById(userId, token);
+            System.out.println("Rol del usuario: " + role);
+
+            // Verificar si el usuario tiene el rol de "ADMIN"
+            // Y como solo hay un admin pues no se necesita verificar si es el mismo que esta logueado
+            if (!"ADMIN".equals(role)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You dont have permission to do this action.");
+            }
+            
             if (badWordsService.containsBadWords(forum.getName())) {
                 return ResponseEntity.badRequest().body("The content has bad words");
             }
@@ -81,11 +104,11 @@ public class ForumController {
         }
     }
 
-    // DELETE /api/${api.version}/messages/{id} - Elimina un curso por ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteForum(@PathVariable String id) {
+    // DELETE /api/${api.version}/messages/{courseid} - Elimina un foro por courseID
+    @DeleteMapping("/{couseid}")
+    public ResponseEntity<Void> deleteForum(@PathVariable String courseId) {
         try {
-            forumService.deleteForum(id);
+            forumService.deleteForumByCourseId(courseId);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();

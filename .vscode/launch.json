@@ -12,9 +12,9 @@
         },
         {
             "type": "java",
-            "name": "ForumMessageApplication",
+            "name": "ForumApplication",
             "request": "launch",
-            "mainClass": "us.cloud.teachme.forummessage.ForumMessageApplication",
+            "mainClass": "us.cloud.teachme.forum.ForumApplication",
             "projectName": "forumMessage"
         }
     ]
