@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import us.cloud.teachme.forummessage.model.ForumMessage;
@@ -21,7 +22,6 @@ import us.cloud.teachme.forummessage.repository.ForumMessageRepository;
 import us.cloud.teachme.forummessage.service.ForumMessageService;
 
 @SpringBootTest
-@Transactional
 class ForumMessageServiceUnitaryTest {
 
     @Mock
@@ -66,6 +66,7 @@ class ForumMessageServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testCreateForumMessage_Positive() {
         ForumMessage message = new ForumMessage();
         message.setContent("Test Content");
@@ -81,6 +82,7 @@ class ForumMessageServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testUpdateForumMessage_Positive() {
         String id = "1";
         ForumMessage existingMessage = new ForumMessage();
@@ -102,6 +104,7 @@ class ForumMessageServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForumMessage_Positive() {
         String id = "1";
 
@@ -142,6 +145,7 @@ class ForumMessageServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testUpdateForumMessage_Negative() {
         String id = "1";
         ForumMessage updatedMessage = new ForumMessage();
@@ -157,6 +161,7 @@ class ForumMessageServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForumMessage_Negative() {
         String id = "1";
 

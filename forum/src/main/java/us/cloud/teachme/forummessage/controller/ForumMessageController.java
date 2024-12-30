@@ -25,7 +25,7 @@ import us.cloud.teachme.forum.service.ForumService;
 import jakarta.validation.Valid;
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/api/${api.version}/forums/{forumId}/messages")
+@RequestMapping("/api/v1/forums/{forumId}/messages")
 public class ForumMessageController {
     @Autowired
     private ForumMessageService forumMessageService;

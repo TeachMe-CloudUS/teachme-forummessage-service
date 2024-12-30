@@ -13,14 +13,17 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Rollback;
 
 import us.cloud.teachme.forum.model.Forum;
 import us.cloud.teachme.forum.service.ForumService;
 import us.cloud.teachme.forummessage.service.BadWordsService;
 import us.cloud.teachme.forum.controller.ForumController;
 
+@SpringBootTest
 class ForumControllerUnitaryTest {
 
     @Mock
@@ -71,6 +74,7 @@ class ForumControllerUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testCreateForum_Valid() {
         Forum forumToCreate = new Forum(null, "Valid Forum", new Date(), new Date());
         Forum createdForum = new Forum("1", "Valid Forum", new Date(), new Date());
@@ -87,6 +91,7 @@ class ForumControllerUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testCreateForum_WithBadWords() {
         Forum forumToCreate = new Forum(null, "Bad Forum", new Date(), new Date());
 
@@ -101,6 +106,7 @@ class ForumControllerUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testUpdateForum_Valid() {
         Forum forumToUpdate = new Forum(null, "Updated Forum", new Date(), new Date());
         Forum updatedForum = new Forum("1", "Updated Forum", new Date(), new Date());
@@ -117,6 +123,7 @@ class ForumControllerUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testUpdateForum_NotFound() {
         Forum forumToUpdate = new Forum(null, "Updated Forum", new Date(), new Date());
 
@@ -131,6 +138,7 @@ class ForumControllerUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForum_Valid() {
         doNothing().when(forumService).deleteForum("1");
 
@@ -141,6 +149,7 @@ class ForumControllerUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForum_NotFound() {
         doThrow(new RuntimeException("Not Found")).when(forumService).deleteForum("1");
 
@@ -151,6 +160,7 @@ class ForumControllerUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteAllForums() {
         doNothing().when(forumService).deleteAllForums();
 

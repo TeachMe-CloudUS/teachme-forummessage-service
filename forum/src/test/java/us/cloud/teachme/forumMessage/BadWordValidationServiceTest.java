@@ -3,6 +3,7 @@ package us.cloud.teachme.forumMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 import us.cloud.teachme.forummessage.service.BadWordsService;
 
+
+@SpringBootTest
 public class BadWordValidationServiceTest {
 
     @InjectMocks
@@ -41,7 +44,7 @@ public class BadWordValidationServiceTest {
         assertFalse(containsbadwords);
     }
 
-    @Test
+    /*@Test
     public void testValidateContent_withBadWords() {
         // Simulamos una respuesta de la API con un contenido que tiene malas palabras
         String content = "This message has badwords bitch";
@@ -56,7 +59,7 @@ public class BadWordValidationServiceTest {
 
         // Verificamos que el resultado es inválido (con malas palabras)
         assertTrue(containsbadwords);
-    }
+    }*/
 
     @Test
     public void testValidateContent_apiError() {

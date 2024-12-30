@@ -62,7 +62,7 @@ public class BadWordsService{
             // Realiza la solicitud GET a la API
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
             String responseBody = response.getBody();
-     
+     System.out.println(responseBody);
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonResponse = objectMapper.readTree(responseBody);
 

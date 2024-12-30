@@ -7,14 +7,13 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
+
 import us.cloud.teachme.forummessage.model.ForumMessage;
 import us.cloud.teachme.forummessage.service.ForumMessageService;
 
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ForumMessageServiceIntegrationTest {
 
     @Autowired
@@ -22,6 +21,7 @@ class ForumMessageServiceIntegrationTest {
 
     // Test positivos
     @Test
+    @Rollback(true)
     void testCreateAndRetrieveForumMessage_Positive() {
         ForumMessage message = new ForumMessage();
         message.setContent("Integration Test Content");
@@ -39,6 +39,7 @@ class ForumMessageServiceIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     void testUpdateForumMessage_Positive() {
         ForumMessage message = new ForumMessage();
         message.setContent("Original Content");
@@ -56,6 +57,7 @@ class ForumMessageServiceIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForumMessage_Positive() {
         
         Integer numberOfForumMessages = forumMessageService.getAllForumMessages().size();
@@ -91,6 +93,7 @@ class ForumMessageServiceIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForumMessagesByForumId_Positive() {
         ForumMessage message1 = new ForumMessage();
         message1.setContent("Message 1");
@@ -111,6 +114,7 @@ class ForumMessageServiceIntegrationTest {
 
     // Test negativos
     @Test
+    @Rollback(true)
     void testUpdateForumMessage_Negative() {
         String invalidId = "999";
         ForumMessage updatedMessage = new ForumMessage();
@@ -124,6 +128,7 @@ class ForumMessageServiceIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForumMessage_Negative() {
         String invalidId = "999";
 

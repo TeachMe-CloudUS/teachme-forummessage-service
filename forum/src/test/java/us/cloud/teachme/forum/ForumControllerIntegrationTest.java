@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -73,6 +74,7 @@ public class ForumControllerIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     public void createForum_shouldReturnCreatedForum() throws Exception {
         Forum forum = new Forum("1", "Course 1", new Date(), new Date());
         Forum createdForum = new Forum("1", "Course 1", new Date(), new Date());
@@ -89,6 +91,7 @@ public class ForumControllerIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     public void createForum_shouldReturnBadRequestWhenContainsBadWords() throws Exception {
         Forum forum = new Forum("1", "BadWord bitch", new Date(), new Date());
 
@@ -102,6 +105,7 @@ public class ForumControllerIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     public void updateForum_shouldReturnUpdatedForum() throws Exception {
         Forum forum = new Forum("2", "Updated Course", new Date(), new Date());
         Forum updatedForum = new Forum("1", "Updated Course", new Date(), new Date());
@@ -118,6 +122,7 @@ public class ForumControllerIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     public void updateForum_shouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
         Forum forum = new Forum("1", "Updated Course", new Date(), new Date());
 
@@ -131,6 +136,7 @@ public class ForumControllerIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     public void deleteForum_shouldReturnNoContent() throws Exception {
         doNothing().when(forumService).deleteForum("1");
 
@@ -139,6 +145,7 @@ public class ForumControllerIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     public void deleteForum_shouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
         doThrow(new RuntimeException("Not Found")).when(forumService).deleteForum("1");
 
@@ -147,6 +154,7 @@ public class ForumControllerIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     public void deleteAllForums_shouldReturnNoContent() throws Exception {
         doNothing().when(forumService).deleteAllForums();
 
@@ -155,6 +163,7 @@ public class ForumControllerIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     public void createForum_shouldReturnBadRequestForInvalidPayload() throws Exception {
         String invalidPayload = "{\"name\":null}"; // Missing required fields
 

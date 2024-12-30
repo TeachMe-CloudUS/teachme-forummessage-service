@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -20,6 +22,7 @@ import us.cloud.teachme.forum.model.Forum;
 import us.cloud.teachme.forum.repository.ForumRepository;
 import us.cloud.teachme.forum.service.ForumService;
 
+@SpringBootTest
 class ForumServiceUnitaryTest {
 
     @Mock
@@ -58,6 +61,7 @@ class ForumServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testCreateForum() {
         Forum forum = new Forum( "course1", "New Forum", null, null);
         when(forumRepository.save(any(Forum.class))).thenAnswer(invocation -> {
@@ -74,6 +78,7 @@ class ForumServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testUpdateForum() {
         Forum existingForum = new Forum( "course1", "Old Forum", new Date(), new Date());
         Forum updatedForum = new Forum( "course1", "Updated Forum", null, null);
@@ -88,6 +93,7 @@ class ForumServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForum() {
         when(forumRepository.existsById("1")).thenReturn(true);
 
@@ -98,6 +104,7 @@ class ForumServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForumNotFound() {
         when(forumRepository.existsById("1")).thenReturn(false);
 
@@ -109,6 +116,7 @@ class ForumServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteAllForums() {
         forumService.deleteAllForums();
 
@@ -128,6 +136,7 @@ class ForumServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForumsByForumId() {
         forumService.deleteForumsByForumId("1");
 
@@ -145,6 +154,7 @@ class ForumServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testUpdateForumNotFound() {
         when(forumRepository.findById("non-existent-id")).thenReturn(Optional.empty());
         Forum updatedForum = new Forum("course1", "Updated Forum", null, null);
@@ -171,6 +181,7 @@ class ForumServiceUnitaryTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForumsByForumIdNotFound() {
         doThrow(new RuntimeException("Forum not found with id non-existent-id"))
             .when(forumRepository).deleteById("non-existent-id");

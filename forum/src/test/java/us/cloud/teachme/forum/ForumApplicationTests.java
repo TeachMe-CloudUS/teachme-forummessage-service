@@ -3,7 +3,11 @@ package us.cloud.teachme.forum;
 import org.junit.jupiter.api.Test;
 import jakarta.validation.ConstraintViolation;
 import us.cloud.teachme.forummessage.model.ForumMessage;
+
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;

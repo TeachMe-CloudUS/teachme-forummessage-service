@@ -4,6 +4,7 @@ package us.cloud.teachme.forum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import us.cloud.teachme.forum.model.Forum;
@@ -17,7 +18,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 class ForumServiceIntegrationTest {
 
     @Autowired
@@ -27,6 +27,7 @@ class ForumServiceIntegrationTest {
     private ForumRepository forumRepository;
 
     @Test
+    @Rollback(true)
     void testCreateForum() {
         Forum forum = new Forum( "course1", "Integration Test Forum", new Date(), new Date());
 
@@ -63,6 +64,7 @@ class ForumServiceIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     void testUpdateForum() {
         Forum forum = new Forum( "course1", "Old Forum", new Date(), new Date());
         Forum savedForum = forumRepository.save(forum);
@@ -74,6 +76,7 @@ class ForumServiceIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForum() {
         Forum forum = new Forum( "course1", "Forum to delete", new Date(), new Date());
         Forum savedForum = forumRepository.save(forum);
@@ -91,6 +94,7 @@ class ForumServiceIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     void testUpdateForumNotFound() {
         Forum updatedForum = new Forum("course1", "Updated Forum", null, null);
 
@@ -101,6 +105,7 @@ class ForumServiceIntegrationTest {
     }
 
     @Test
+    @Rollback(true)
     void testDeleteForumNotFound() {
         Exception exception = assertThrows(RuntimeException.class, 
             () -> forumService.deleteForum("non-existent-id"));
