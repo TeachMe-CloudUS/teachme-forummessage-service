@@ -46,4 +46,4 @@ jobs:
           BADWORDS_API_KEY : '224d424766mshbfbf8766bac89a3p17c285jsn2eedcdc6af1b'
           BADWORDS_API_URL : 'https://community-purgomalum.p.rapidapi.com/json?text='
           MONGODB_URI : 'mongodb+srv://fis:fis@deliverusadvanced.sot48mx.mongodb.net/?retryWrites=true&w=majority&appName=deliverusadvanced'
-          BASE_URL : 'http://localhost:8080'
+          BASE_URL : 'http://localhost:8085'
