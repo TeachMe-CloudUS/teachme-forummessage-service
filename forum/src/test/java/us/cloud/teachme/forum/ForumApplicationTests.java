@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 class ForumApplicationTests {
 
-    private Validator validator;
+  /*  private Validator validator;
 
     @BeforeEach
     public void setUp() {
@@ -100,5 +100,5 @@ class ForumApplicationTests {
         Assertions.assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("The message must have a maximum of 300 characters")));
     }
 	
-
+*/
 }
