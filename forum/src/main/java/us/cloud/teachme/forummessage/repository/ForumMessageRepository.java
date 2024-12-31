@@ -10,5 +10,6 @@ public interface ForumMessageRepository extends MongoRepository<ForumMessage, St
  //   List<ForumMessage> findByCategory(String category);
     List<ForumMessage> findByForumId(String forumId);
     void deleteByForumId(String forumId);
+    List<ForumMessage> findByUserId(String userId);
     
 }

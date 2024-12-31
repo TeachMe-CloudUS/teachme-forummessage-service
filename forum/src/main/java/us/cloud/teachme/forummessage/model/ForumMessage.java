@@ -21,7 +21,7 @@ public class ForumMessage {
     @Id
     private String id;
     @NotNull(message = "The studentId cannot be null")
-    private String studentId;
+    private String userId;
 
     @NotNull(message = "The message cannot be null")
     @NotBlank(message = "The message cannot be empty")

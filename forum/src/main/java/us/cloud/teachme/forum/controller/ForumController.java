@@ -69,7 +69,9 @@ public class ForumController {
         if (badWordsService.containsBadWords(forum.getName())) {
             return ResponseEntity.badRequest().body("The content has bad words");
         }
+        forum.setId(forum.getCourseId());
         Forum createdForum = forumService.createForum(forum);
+        
         return new ResponseEntity<>(createdForum, HttpStatus.CREATED);
     }
 

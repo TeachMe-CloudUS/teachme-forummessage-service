@@ -32,6 +32,7 @@ public class Forum {
     private Date creationDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastModifDate;
+    
     //private List<ForumMessage> messages;
     
 

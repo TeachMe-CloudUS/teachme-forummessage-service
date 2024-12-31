@@ -30,6 +30,7 @@ public class ForumMessageService {
     public Optional<ForumMessage> getForumMessageById(String id) {
         return ForumMessageRepository.findById(id);
     }
+    
     /*public List<ForumMessage> getForumMessagesByCategory(String category) {
         return ForumMessageRepository.findByCategory(category);
     }*/
@@ -67,7 +68,9 @@ public class ForumMessageService {
         ForumMessageRepository.deleteByForumId(forumId);
     }
 
-    
+    public List<ForumMessage> getForumMessagesByUserId(String userId) {
+        return ForumMessageRepository.findByUserId(userId);
+    }
    
     
 }

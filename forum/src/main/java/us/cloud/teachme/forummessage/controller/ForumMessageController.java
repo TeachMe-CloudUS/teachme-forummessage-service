@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ import us.cloud.teachme.forummessage.model.ForumMessage;
 import us.cloud.teachme.forummessage.service.ForumMessageService;
 import us.cloud.teachme.forummessage.service.BadWordsService;
 import us.cloud.teachme.forum.service.ForumService;
+import us.cloud.teachme.forum.service.UserService;
 
 import jakarta.validation.Valid;
 @CrossOrigin(origins = "http://localhost:5173")
@@ -36,7 +38,10 @@ public class ForumMessageController {
     @Autowired
     private BadWordsService badWordsService;
 
-    public ForumMessageController(ForumMessageService forumMessageService,ForumService forumService, BadWordsService badWordsService) {
+    @Autowired  
+    private UserService userService;
+
+    public ForumMessageController(ForumMessageService forumMessageService,ForumService forumService, BadWordsService badWordsService, UserService userService) {
 
         this.forumMessageService = forumMessageService;
         this.forumService = forumService;
@@ -73,7 +78,7 @@ public class ForumMessageController {
     // POST /api/${api.version}/messages  - Crea un nuevo curso
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> createForumMessage(@PathVariable("forumId") String forumId,@Valid @RequestBody ForumMessage forumMessage ) {
+    public ResponseEntity<?> createForumMessage(@RequestHeader("Authorization") String token,@PathVariable("forumId") String forumId,@Valid @RequestBody ForumMessage forumMessage ) {
         if (badWordsService.containsBadWords(forumMessage.getContent())) {
             return ResponseEntity.badRequest().body("The content has bad words");
         }
@@ -86,6 +91,16 @@ public class ForumMessageController {
         if (forumService.getForumById(forumMessage.getForumId()).isEmpty()) {
             return ResponseEntity.badRequest().body("The forumId does not exist");            
         }
+        token = token.trim();
+
+            // Extraer el UserId del token
+            String userId = userService.extractUserId(token);
+            System.out.println("UserId extraído: " + userId);
+
+            // Consultar el rol del usuario usando el UserId
+            String role = userService.getUserRoleById(userId, token);
+            System.out.println("Rol del usuario: " + role);
+            forumMessage.setUserId(userId);
         ForumMessage createdForumMessage = forumMessageService.createForumMessage(forumMessage);
         return new ResponseEntity<>(createdForumMessage, HttpStatus.CREATED);
     }
@@ -93,7 +108,7 @@ public class ForumMessageController {
     // PUT /api/${api.version}/messages/{id} - Actualiza un curso existente
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> updateForumMessage(@PathVariable("forumId") String forumId,@PathVariable String id, @Valid @RequestBody ForumMessage forumMessage) {
+    public ResponseEntity<?> updateForumMessage(@RequestHeader("Authorization") String token,@PathVariable("forumId") String forumId,@PathVariable String id, @Valid @RequestBody ForumMessage forumMessage) {
         try {
             if (badWordsService.containsBadWords(forumMessage.getContent())) {
                 return ResponseEntity.badRequest().body("The content has bad words");
@@ -103,6 +118,23 @@ public class ForumMessageController {
             }
             if (forumService.getForumById(forumMessage.getForumId()).isEmpty()) {
                 return ResponseEntity.badRequest().body("The forumId does not exist");            
+            }
+            token = token.trim();
+
+            // Extraer el UserId del token
+            String userId = userService.extractUserId(token);
+            System.out.println("UserId extraído: " + userId);
+
+            // Consultar el rol del usuario usando el UserId
+            String role = userService.getUserRoleById(userId, token);
+            System.out.println("Rol del usuario: " + role);
+
+            List<ForumMessage> forumsFromUser = forumMessageService.getForumMessagesByUserId(userId);
+            if (forumsFromUser.isEmpty()) {
+                return ResponseEntity.badRequest().body("The user does not have any messages");
+            }
+            if (forumsFromUser.stream().noneMatch(forum -> forum.getId() == id)) {
+                return ResponseEntity.badRequest().body("The user cant edit this message");
             }
             ForumMessage updatedForumMessage = forumMessageService.updateForumMessage(id, forumMessage);
             return ResponseEntity.ok(updatedForumMessage);
@@ -114,8 +146,27 @@ public class ForumMessageController {
     // DELETE /api/${api.version}/messages/{id} - Elimina un curso por ID
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> deleteForumMessage(@PathVariable("forumId") String forumId,@PathVariable String id) {
+    public ResponseEntity<?> deleteForumMessage(@RequestHeader("Authorization") String token,@PathVariable("forumId") String forumId,@PathVariable String id) {
         try {
+            
+            token = token.trim();
+
+            // Extraer el UserId del token
+            String userId = userService.extractUserId(token);
+            System.out.println("UserId extraído: " + userId);
+
+            // Consultar el rol del usuario usando el UserId
+            String role = userService.getUserRoleById(userId, token);
+            System.out.println("Rol del usuario: " + role);
+
+            List<ForumMessage> forumsFromUser = forumMessageService.getForumMessagesByUserId(userId);
+            if (forumsFromUser.isEmpty()) {
+                return ResponseEntity.badRequest().body("The user does not have any messages");
+            }
+            if (forumsFromUser.stream().noneMatch(forum -> forum.getId() == id)) {
+                return ResponseEntity.badRequest().body("The user cant delete this message");
+            }
+
             forumMessageService.deleteForumMessage(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {

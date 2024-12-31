@@ -34,7 +34,7 @@ class ForumMessageApplicationTests {
         // Crear un objeto ForumMessage con contenido válido
         ForumMessage forumMessage = new ForumMessage();
         forumMessage.setId("1");
-        forumMessage.setStudentId("student123");
+        forumMessage.setUserId("student123");
         forumMessage.setContent("This is a valid message.");
         forumMessage.setCreationDate(new Date());
         forumMessage.setLastModifDate(new Date());
@@ -50,7 +50,7 @@ class ForumMessageApplicationTests {
         // Crear un objeto ForumMessage con contenido nulo
         ForumMessage forumMessage = new ForumMessage();
         forumMessage.setId("2");
-        forumMessage.setStudentId("student456");
+        forumMessage.setUserId("student456");
         forumMessage.setContent(null); // Contenido nulo
         forumMessage.setCreationDate(new Date());
         forumMessage.setLastModifDate(new Date());
@@ -67,7 +67,7 @@ class ForumMessageApplicationTests {
         // Crear un objeto ForumMessage con contenido vacío
         ForumMessage forumMessage = new ForumMessage();
         forumMessage.setId("3");
-        forumMessage.setStudentId("student789");
+        forumMessage.setUserId("student789");
         forumMessage.setContent(" "); // Contenido vacío
         forumMessage.setCreationDate(new Date());
         forumMessage.setLastModifDate(new Date());
@@ -84,7 +84,7 @@ class ForumMessageApplicationTests {
         // Crear un objeto ForumMessage con contenido que excede el límite de caracteres
         ForumMessage forumMessage = new ForumMessage();
         forumMessage.setId("4");
-        forumMessage.setStudentId("student101");
+        forumMessage.setUserId("student101");
         forumMessage.setContent("A".repeat(301)); // 301 caracteres, que excede el límite de 300
         forumMessage.setCreationDate(new Date());
         forumMessage.setLastModifDate(new Date());
