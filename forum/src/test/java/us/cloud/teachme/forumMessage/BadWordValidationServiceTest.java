@@ -28,7 +28,7 @@ public class BadWordValidationServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-   /* @Test
+    @Test
     public void testValidateContent_noBadWords() {
         // Simulamos una respuesta de la API con un contenido sin malas palabras
         String content = "This is a clean message";
@@ -42,9 +42,9 @@ public class BadWordValidationServiceTest {
 
         // Verificamos que el resultado es válido (sin malas palabras)
         assertFalse(containsbadwords);
-    }
-*/
-    /*@Test
+    }/*
+
+    @Test
     public void testValidateContent_withBadWords() {
         // Simulamos una respuesta de la API con un contenido que tiene malas palabras
         String content = "This message has badwords bitch";
@@ -61,7 +61,7 @@ public class BadWordValidationServiceTest {
         assertTrue(containsbadwords);
     }*/
 
-   /* @Test
+    @Test
     public void testValidateContent_apiError() {
         // Simulamos un error en la API (por ejemplo, un timeout o un error de red)
         String content = "This is a message";
@@ -90,7 +90,7 @@ public class BadWordValidationServiceTest {
         // Verificamos que el resultado es válido (sin malas palabras)
         assertFalse(containsbadwords);
     }
-*/
+
     
 
 }

@@ -25,7 +25,7 @@ import us.cloud.teachme.forum.controller.ForumController;
 
 @SpringBootTest
 class ForumControllerUnitaryTest {
-/*
+
     @Mock
     private ForumService forumService;
 
@@ -135,28 +135,28 @@ class ForumControllerUnitaryTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(badWordsService, times(1)).containsBadWords("Updated Forum");
         verify(forumService, times(1)).updateForum("1", forumToUpdate);
-    }
+    }*/
 
     @Test
     @Rollback(true)
     void testDeleteForum_Valid() {
-        doNothing().when(forumService).deleteForum("1");
+        doNothing().when(forumService).deleteForumByCourseId("1");
 
         ResponseEntity<Void> response = forumController.deleteForum("1");
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(forumService, times(1)).deleteForum("1");
+        verify(forumService, times(1)).deleteForumByCourseId("1");
     }
 
     @Test
     @Rollback(true)
     void testDeleteForum_NotFound() {
-        doThrow(new RuntimeException("Not Found")).when(forumService).deleteForum("1");
+        doThrow(new RuntimeException("Not Found")).when(forumService).deleteForumByCourseId("1");
 
         ResponseEntity<Void> response = forumController.deleteForum("1");
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(forumService, times(1)).deleteForum("1");
+        verify(forumService, times(1)).deleteForumByCourseId("1");
     }
 
     @Test
@@ -168,6 +168,6 @@ class ForumControllerUnitaryTest {
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(forumService, times(1)).deleteAllForums();
-    }*/
+    }
 }
 

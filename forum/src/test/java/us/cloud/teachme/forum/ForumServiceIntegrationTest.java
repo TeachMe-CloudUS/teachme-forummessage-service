@@ -25,7 +25,7 @@ class ForumServiceIntegrationTest {
 
     @Autowired
     private ForumRepository forumRepository;
-/*
+
     @Test
     @Rollback(true)
     void testCreateForum() {
@@ -113,7 +113,7 @@ class ForumServiceIntegrationTest {
         assertEquals("Forum not found with id non-existent-id", exception.getMessage());
     }
 
-    */
+    
 
 }
 

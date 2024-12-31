@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
+import org.h2.engine.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import us.cloud.teachme.forum.model.Forum;
 import us.cloud.teachme.forum.service.ForumService;
+import us.cloud.teachme.forum.service.UserService;
 import us.cloud.teachme.forummessage.service.BadWordsService;
 import us.cloud.teachme.forum.controller.ForumController;
 
@@ -35,10 +37,13 @@ public class ForumControllerIntegrationTest {
     @MockBean
     private BadWordsService badWordsService;
 
+    @MockBean
+    private UserService userService;
+
     @Autowired
     private ObjectMapper objectMapper;
 
-    /*@Test
+    @Test
     public void getAllForums_shouldReturnForumsList() throws Exception {
         Forum forum1 = new Forum("1", "Course 1", new Date(), new Date());
         Forum forum2 = new Forum("2", "Course 2", new Date(), new Date());
@@ -133,12 +138,12 @@ public class ForumControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(forum)))
                 .andExpect(status().isNotFound());
-    }
+    }*/
 
     @Test
     @Rollback(true)
     public void deleteForum_shouldReturnNoContent() throws Exception {
-        doNothing().when(forumService).deleteForum("1");
+        doNothing().when(forumService).deleteForumByCourseId("1");
 
         mockMvc.perform(delete("/api/v1/forums/1"))
                 .andExpect(status().isNoContent());
@@ -147,7 +152,7 @@ public class ForumControllerIntegrationTest {
     @Test
     @Rollback(true)
     public void deleteForum_shouldReturnNotFoundWhenIdDoesNotExist() throws Exception {
-        doThrow(new RuntimeException("Not Found")).when(forumService).deleteForum("1");
+        doThrow(new RuntimeException("Not Found")).when(forumService).deleteForumByCourseId("1");
 
         mockMvc.perform(delete("/api/v1/forums/1"))
                 .andExpect(status().isNotFound());
@@ -171,5 +176,5 @@ public class ForumControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(invalidPayload))
                 .andExpect(status().isBadRequest());
-    }*/
+    }
 }

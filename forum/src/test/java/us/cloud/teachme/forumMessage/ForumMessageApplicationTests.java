@@ -27,7 +27,7 @@ class ForumMessageApplicationTests {
     public void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
-    }/*
+    }
 
 	@Test
     public void testValidContent() {
@@ -94,7 +94,7 @@ class ForumMessageApplicationTests {
         var violations = validator.validate(forumMessage);
         Assertions.assertFalse(violations.isEmpty(), "The message should not exceed 300 characters");
         Assertions.assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("The message must have a maximum of 300 characters")));
-    }*/
+    }
 	
 
 }

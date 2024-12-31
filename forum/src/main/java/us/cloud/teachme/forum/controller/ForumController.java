@@ -104,8 +104,8 @@ public class ForumController {
         }
     }
 
-    // DELETE /api/${api.version}/messages/{courseid} - Elimina un foro por courseID
-    @DeleteMapping("/{couseid}")
+
+    @DeleteMapping("/{courseId}")
     public ResponseEntity<Void> deleteForum(@PathVariable String courseId) {
         try {
             forumService.deleteForumByCourseId(courseId);
@@ -115,7 +115,6 @@ public class ForumController {
         }
     }
 
-    // DELETE /api/${api.version}/messages - Elimina todos los cursos
     @DeleteMapping
     public ResponseEntity<Void> deleteAllForums() {
         forumService.deleteAllForums();
