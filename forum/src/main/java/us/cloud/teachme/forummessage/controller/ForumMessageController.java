@@ -133,9 +133,7 @@ public class ForumMessageController {
             if (forumsFromUser.isEmpty()) {
                 return ResponseEntity.badRequest().body("The user does not have any messages");
             }
-            if (forumsFromUser.stream().noneMatch(forum -> forum.getId() == id)) {
-                return ResponseEntity.badRequest().body("The user cant edit this message");
-            }
+            
             ForumMessage updatedForumMessage = forumMessageService.updateForumMessage(id, forumMessage);
             return ResponseEntity.ok(updatedForumMessage);
         } catch (RuntimeException e) {
@@ -163,9 +161,7 @@ public class ForumMessageController {
             if (forumsFromUser.isEmpty()) {
                 return ResponseEntity.badRequest().body("The user does not have any messages");
             }
-            if (forumsFromUser.stream().noneMatch(forum -> forum.getId() == id)) {
-                return ResponseEntity.badRequest().body("The user cant delete this message");
-            }
+            
 
             forumMessageService.deleteForumMessage(id);
             return ResponseEntity.noContent().build();
