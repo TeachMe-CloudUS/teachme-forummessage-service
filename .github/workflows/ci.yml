@@ -41,6 +41,7 @@ jobs:
           BADWORDS_API_URL : 'https://community-purgomalum.p.rapidapi.com/json?text='
           MONGODB_URI : 'mongodb+srv://fis:fis@deliverusadvanced.sot48mx.mongodb.net/?retryWrites=true&w=majority&appName=deliverusadvanced'
           BASE_URL : 'http://localhost:8085'
+          BASE: 'http://localhost:8888'
 
       - name: Run tests
         shell: bash           # Usa Bash en lugar de PowerShell
@@ -52,3 +53,4 @@ jobs:
           BADWORDS_API_URL : 'https://community-purgomalum.p.rapidapi.com/json?text='
           MONGODB_URI : 'mongodb+srv://fis:fis@deliverusadvanced.sot48mx.mongodb.net/?retryWrites=true&w=majority&appName=deliverusadvanced'
           BASE_URL : 'http://localhost:8085'
+          BASE: 'http://localhost:8888'
